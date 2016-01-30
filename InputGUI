@@ -1,0 +1,100 @@
+'''
+All possible transform functions.
+
+You need to complete this file.
+
+Those whose name starts with transform_ will appear in the menu option.
+You can write as many helper functions as you want to support these primary functions.
+
+Created on Jan 30, 2015
+
+
+
+@author: Christopher Lu
+'''
+import string
+
+
+def transform_identity (word):
+    '''Identity transform (no change).
+       Note, this simply serves as an example transform.
+    '''
+    return word
+
+
+def transform_uppercase (word):
+    '''Transform to UPPERCASE (no decode).
+       Note, this simply serves as an example transform.
+    '''
+    return word.upper()
+
+
+def transform_pigify (word):
+    '''Encode into Pig-latin from English.
+       Note, when transforming the string word, 
+             do not change its capitalization or punctuation.
+       Note, this transformation is not unique, 
+             some different words may be transformed into the same pig-latin word.
+    '''
+    # TODO: complete this function so that it returns a new version of the string word,
+    #       assuming word is in English, use the rules of pig-latin to encode the word
+    vowel = "AEIOUaeiou"
+    transfer = ""
+    if word[0] in vowel:
+        return word + "-way"
+    elif word[0] == "q" and word[1] == "u":
+        return word[2:] + "-quay"
+    else:
+        for i in range(len(word)):
+            if word[i] in vowel:
+                transfer = word[:i]
+                return word[i:] + "-" + transfer +"ay"
+            else:
+                transfer = transfer + word[i]
+    for i in range(len(word)):
+        if word[i] not in vowel:
+            return word + "-way"
+    return word
+
+
+def transform_unpigify (word):
+    '''Decode from Pig-latin into English.
+       Note, when transforming the string word, 
+             do not change its capitalization or punctuation.
+       Note, since some words may represent multiple different English words, 
+             choose the final English word you think is more common.
+    '''
+    # TODO: complete this function so that it returns a new version of the string word,
+    #       assuming word is in pig-latin, undo the pig-latin rules to decode the word to English
+    vowels = "AEIOUaeiou"
+    if word[-3:] == "way": 
+        return word[:-4]
+    elif word[-4:] == "quay":
+        return "qu" + word[:-5]
+    else:
+        for i in range(len(word)):
+            if word[i] == "-":
+                transfer = word[(i+1):]
+                return transfer[:-2] + word[:i]
+
+
+def transform_rot13 (word):
+    '''ROT-13 substitution cipher (both encodes and decodes).
+       Note, since this transformation is symmetrical, 
+       it can serve as encoder and decoder for the same message.
+    '''
+    # TODO: complete this function so that it returns a new version of the string word, 
+    #       with each letter rotated by 13 places.
+    a = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    b = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm"
+    newword = ""
+    for i in word:
+        if i not in a:
+            newword = newword + i
+        else:
+            aindex = a.find(i)
+            bword = b[aindex]
+            newword = newword + bword
+    return newword
+
+
